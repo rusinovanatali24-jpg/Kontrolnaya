@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контрольная работа: Нумерация, 4 класс</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--tx:#1f2a44;--mu:#6b7691;--ac:#3b6fe0;--ok:#1f9d55;--bad:#d64545;--bd:#d9e0ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a2b;--card:#1d2540;--tx:#e8ecf8;--mu:#9aa6c4;--ac:#6f95f5;--bd:#33405f}}
+:root[data-theme="dark"]{--bg:#141a2b;--card:#1d2540;--tx:#e8ecf8;--mu:#9aa6c4;--ac:#6f95f5;--bd:#33405f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:.2em 0}.sub{color:var(--mu);margin:0 0 12px}
+.tabs{display:flex;gap:8px;margin:12px 0}.tabs button{flex:1;padding:10px;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button.on{border-color:var(--ac);background:var(--ac);color:#fff}
+.name{width:100%;padding:10px;border:2px solid var(--bd);border-radius:10px;font:inherit;background:var(--card);color:var(--tx)}
+.task{background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
+.task h3{margin:0 0 8px;font-size:1.05rem}.task h3 span{display:inline-block;background:var(--ac);color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;margin-right:8px;font-size:.95rem}
+.txt{margin:0 0 8px}.row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:6px 0}
+.f{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+input.a,select{padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;background:var(--bg);color:var(--tx);min-width:0}
+input.a{width:130px}input.w{width:min(100%,360px)}input.s{width:90px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:8px 12px;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;cursor:pointer}
+.chip.used{opacity:.35}.seq{min-height:40px;margin-top:8px;padding:8px;border:2px dashed var(--bd);border-radius:10px;color:var(--mu)}
+.seq b{color:var(--tx)}.rs{margin-left:8px;font-size:.9rem;color:var(--mu);cursor:pointer;text-decoration:underline;background:none;border:0;font:inherit}
+.ok input,.ok select,.ok .seq{border-color:var(--ok)!important;background:color-mix(in srgb,var(--ok) 12%,var(--bg))}
+.bad input,.bad select,.bad .seq{border-color:var(--bad)!important;background:color-mix(in srgb,var(--bad) 12%,var(--bg))}
+.go{display:block;width:100%;padding:14px;border:0;border-radius:14px;background:var(--ac);color:#fff;font:inherit;font-weight:700;font-size:1.1rem;cursor:pointer;margin:16px 0}
+#res{display:none;text-align:center;background:var(--card);border:2px solid var(--ac);border-radius:14px;padding:16px}
+#res .g{font-size:3rem;font-weight:800;color:var(--ac);line-height:1.1}
+</style></head><body><main>
+<h1>Контрольная работа по теме «Нумерация»</h1>
+<p class="sub">4 класс · введи ответы и нажми «Проверить»</p>
+<input class="name" id="nm" placeholder="Фамилия и имя">
+<div class="tabs"><button id="bI">Вариант I</button><button id="bII">Вариант II</button></div>
+<div id="box"></div>
+<button class="go" id="chk">Проверить работу</button>
+<div id="res"></div>
+</main>
+<script>
+const nums=(a)=>a.map(x=>[x]);
+const T={
+I:[
+{t:'Запиши числа в порядке возрастания.',k:'order',n:[8692,93504,3079,100001,2089000,551895]},
+{t:'Замени числа суммой разрядных слагаемых (например: 300+20+5).',k:'sum',n:[31717,8500235]},
+{t:'Сравни числа.',k:'cmp',p:[[574215,573215],[56000,65000],[7615,7165],[3714,3174]]},
+{t:'Запиши цифры каждого класса числа (I класс — единицы, II — тысячи, III — миллионы).',k:'cls',n:['7548928','53482976','8400']},
+{t:'Продолжи ряд чисел: 74396, 74397, 74398, …',k:'num',f:[['',74399],['',74400],['',74401]]},
+{t:'Запиши числа, которые содержат:',k:'num',f:[['50 тыс. 30 ед. =',50030],['200 тыс. 2 ед. =',200002],['8 тыс. 8 ед. =',8008]]},
+{t:'Реши задачу. Краткую запись оформи таблицей в тетради.',x:'Из 32 метров ткани сшили 8 одинаковых платьев. Сколько потребуется метров ткани, чтобы сшить 12 таких платьев?',k:'num',f:[['Метров на 1 платье:',4],['Ответ (м):',48]]},
+{t:'Найди значения выражений (решение запиши в столбик в тетради).',k:'num',f:[['608 – 359 =',249],['486 ∙ 2 =',972],['328 + 296 =',624],['436 : 4 =',109],['109 ∙ 7 =',763],['686 : 7 =',98]]},
+{t:'Реши уравнения.',k:'num',f:[['84 – x = 65, x =',19],['x + 78 = 97, x =',19]]},
+{t:'Вычисли периметр и площадь прямоугольника со сторонами 8 см и 3 см.',k:'num',f:[['Периметр (см):',22],['Площадь (см²):',24]]},
+{t:'Реши задачу.',x:'Каждый торт разрезали пополам, а каждую половину — ещё пополам. На каждое из 12 блюдец положили 1 кусок торта. Сколько было тортов?',k:'num',f:[['Ответ:',3]]}
+],
+II:[
+{t:'Запиши числа в порядке возрастания.',k:'order',n:[3289,86703,8038,700007,2394000,716922]},
+{t:'Замени числа суммой разрядных слагаемых (например: 300+20+5).',k:'sum',n:[26331,7300162]},
+{t:'Сравни числа.',k:'cmp',p:[[685400,694500],[37514,73514],[5827,8572],[8111,9198]]},
+{t:'Продолжи ряд чисел: 12496, 12497, 12498, …',k:'num',f:[['',12499],['',12500],['',12501]]},
+{t:'Запиши числа, которые содержат:',k:'num',f:[['70 тыс. 2 ед. =',70002],['102 тыс. 20 ед. =',102020],['7 тыс. 80 ед. =',7080]]},
+{t:'Реши задачу. Краткую запись оформи таблицей в тетради.',x:'Из 32 метров ткани сшили 8 одинаковых платьев. Сколько можно сшить таких платьев из 60 метров ткани?',k:'num',f:[['Метров на 1 платье:',4],['Ответ (платьев):',15]]},
+{t:'Найди значения выражений (решение запиши в столбик в тетради).',k:'num',f:[['706 – 428 =',278],['812 ∙ 2 =',1624],['246 + 479 =',725],['774 : 2 =',387],['407 ∙ 2 =',814],['278 ∙ 3 =',834]]},
+{t:'Реши уравнения.',k:'num',f:[['83 – x = 45, x =',38],['x + 79 = 87, x =',8]]},
+{t:'Найди периметр и площадь квадрата со стороной 7 см.',k:'num',f:[['Периметр (см):',28],['Площадь (см²):',49]]},
+{t:'Реши задачу.',x:'Из 24 красных и 18 белых роз составляют букеты. В каждом букете — 3 красных и 3 белых розы. Какое наибольшее число букетов можно сделать?',k:'num',f:[['Ответ:',6]]}
+]};
+const fmt=n=>n.toLocaleString('ru-RU');
+const clean=s=>s.replace(/[\s\u00a0]/g,'');
+let Q=[],cur='I';
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function field(label,ans,cls){const w=el('span','f');w.append(label?el('span','',label):'');const i=el('input','a '+(cls||''));i.inputMode='numeric';i.autocomplete='off';w.append(i);
+  Q.push({w,ok:()=>clean(i.value)===String(ans)});return w}
+function build(v){
+  cur=v;Q=[];const box=document.getElementById('box');box.innerHTML='';
+  document.getElementById('res').style.display='none';
+  bI.classList.toggle('on',v==='I');bII.classList.toggle('on',v==='II');
+  T[v].forEach((t,idx)=>{
+    const c=el('div','task');c.append(el('h3','',`<span>${idx+1}</span>${t.t}`));
+    if(t.x)c.append(el('p','txt',t.x));
+    if(t.k==='order'){
+      const sorted=[...t.n].sort((a,b)=>a-b),sel=[];
+      const chips=el('div','chips'),seq=el('div','seq');const w=el('div');
+      const draw=()=>{seq.innerHTML=sel.length?sel.map(n=>`<b>${fmt(n)}</b>`).join(' &lt; '):'Нажимай на числа по порядку — от меньшего к большему';
+        [...chips.children].forEach(b=>b.classList.toggle('used',sel.includes(+b.dataset.n)))};
+      t.n.forEach(n=>{const b=el('button','chip',fmt(n));b.dataset.n=n;b.onclick=()=>{const i=sel.indexOf(n);i<0?sel.push(n):sel.splice(i,1);draw()};chips.append(b)});
+      const rs=el('button','rs','Сбросить');rs.onclick=()=>{sel.length=0;draw()};
+      w.append(chips,seq,rs);draw();c.append(w);
+      Q.push({w,ok:()=>sel.join()===sorted.join()});
+    }else if(t.k==='sum'){
+      t.n.forEach(n=>{const r=el('div','row');const w=el('span','f');const s=String(n);
+        const exp=[...s].map((d,i)=>d==='0'?0:+d*10**(s.length-1-i)).filter(x=>x).sort((a,b)=>b-a);
+        const i=el('input','a w');i.autocomplete='off';i.placeholder='…+…+…';w.append(el('b','',fmt(n)+' ='),i);r.append(w);c.append(r);
+        Q.push({w,ok:()=>{const p=clean(i.value).split('+');if(p.some(x=>!/^\d+$/.test(x)))return false;
+          return p.map(Number).sort((a,b)=>b-a).join()===exp.join()}});});
+    }else if(t.k==='cmp'){
+      const r=el('div','row');
+      t.p.forEach(([a,b])=>{const w=el('span','f');const s=el('select','');['?','<','=','>'].forEach(o=>s.append(new Option(o,o)));
+        w.append(el('b','',fmt(a)),s,el('b','',fmt(b)));r.append(w);
+        Q.push({w,ok:()=>s.value===(a<b?'<':a>b?'>':'=')});});c.append(r);
+    }else if(t.k==='cls'){
+      t.n.forEach(n=>{const r=el('div','row');r.append(el('b','',n+' →'));
+        [['I класс',n.slice(-3)],['II класс',n.slice(-6,-3)],['III класс',n.slice(0,-6)]].forEach(([l,a])=>r.append(field(l,a,'s')));c.append(r)});
+    }else{
+      const r=el('div','row');t.f.forEach(([l,a])=>r.append(field(l,a)));c.append(r);
+    }
+    box.append(c);
+  });
+}
+chk.onclick=()=>{
+  let ok=0;Q.forEach(q=>{const g=q.ok();q.w.classList.remove('ok','bad');q.w.classList.add(g?'ok':'bad');if(g)ok++});
+  const p=ok/Q.length*100,g=p>=90?5:p>=75?4:p>=50?3:2;
+  const r=document.getElementById('res');
+  r.innerHTML=`<div>${document.getElementById('nm').value.trim()||'Результат'} · вариант ${cur}</div><div class="g">${g}</div><div>Верно ${ok} из ${Q.length} ответов (${Math.round(p)}%)</div><p class="sub">Зелёным отмечены верные ответы, красным — неверные. Исправь их и проверь ещё раз.</p>`;
+  r.style.display='block';r.scrollIntoView({behavior:'smooth',block:'center'});
+};
+bI.onclick=()=>build('I');bII.onclick=()=>build('II');build('I');
+</script></body></html>
